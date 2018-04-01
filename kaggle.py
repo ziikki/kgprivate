@@ -121,6 +121,7 @@ train_d_X, test_d_X, train_d_y, test_d_y =   train_test_split(pml_train_d_X, pml
 
 # In[ ]:
 
+print("regr1 starting...")
 
 regr1 = RandomForestRegressor(n_estimators=20,criterion = 'mae',
                              max_leaf_nodes = 5, random_state = 2018)
@@ -128,7 +129,7 @@ regr1.fit(train_d_X, train_d_y)
 
 
 # In[ ]:
-print("regr1")
+print("regr1 finished")
 print(regr1.score(train_d_X, train_d_y))
 print(regr1.score(test_d_X, test_d_y))
 
@@ -162,7 +163,7 @@ pml_ans1.to_csv('./answer1.csv',index=False)
 
 # In[ ]:
 
-
+print("regr2 starting ...")
 regr2 = RandomForestRegressor(n_estimators=40,criterion = 'mae',
                              max_leaf_nodes = 2, random_state = 2018)
 regr2.fit(train_d_X, train_d_y)
@@ -170,7 +171,7 @@ regr2.fit(train_d_X, train_d_y)
 
 # In[ ]:
 
-print("regr2")
+print("regr2 finished")
 print(regr2.score(train_d_X, train_d_y))
 print(regr2.score(test_d_X, test_d_y))
 
