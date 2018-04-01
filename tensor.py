@@ -4,15 +4,14 @@
 # In[1]:
 
 
-import tensorflow as tf
 import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-get_ipython().run_line_magic('matplotlib', 'inline')
+# %matplotlib inline
 
 
-# In[42]:
+# In[2]:
 
 
 from sklearn.model_selection import train_test_split
@@ -23,7 +22,7 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.svm import SVR
 
 
-# In[2]:
+# In[3]:
 
 
 pml = pd.read_csv('pml_train.csv')
@@ -31,7 +30,7 @@ print('data loaded')
 pml.head()
 
 
-# In[3]:
+# In[4]:
 
 
 pml_train_y = pml.loss
@@ -39,14 +38,14 @@ pml_train_X = pml.drop(columns=['id', 'loss'])
 pml_train_X.shape
 
 
-# In[4]:
+# In[5]:
 
 
 pml_train_d_X = pd.get_dummies(pml_train_X)
 pml_train_d_X.shape
 
 
-# In[5]:
+# In[6]:
 
 
 pml_test = pd.read_csv('pml_test_features.csv')
@@ -54,7 +53,7 @@ pml_test_X = pml_test.drop(columns=['id'])
 pml_test_X.shape
 
 
-# In[21]:
+# In[7]:
 
 
 # # one-hot encoded test
@@ -62,7 +61,7 @@ pml_test_X.shape
 # pml_test_d_X.shape
 
 
-# In[22]:
+# In[8]:
 
 
 # cDrop = [c for c in pml_test_d_X.columns if c not in pml_train_d_X.columns]
@@ -76,14 +75,14 @@ pml_test_X.shape
 # pml_test_d_X.head()
 
 
-# In[23]:
+# In[9]:
 
 
 # pml_train_cont = pml_train_X.filter(regex=("cont\d*"))
 # pml_train_cont.head()
 
 
-# In[9]:
+# In[10]:
 
 
 #Generate a correlation matrix between features
@@ -117,13 +116,13 @@ def to_digit(col):
     return col.apply(digit_op)
 
 
-# In[15]:
+# In[13]:
 
 
 to_digit(pd.Series(['AA','BB','A']))
 
 
-# In[29]:
+# In[14]:
 
 
 def encode_X_to_digit(orig_train_X):
@@ -135,7 +134,7 @@ def encode_X_to_digit(orig_train_X):
     return c_X
 
 
-# In[30]:
+# In[27]:
 
 
 pml_train_c_X = encode_X_to_digit(pml_train_X)
@@ -143,13 +142,13 @@ pml_test_c_X = encode_X_to_digit(pml_test_X)
 print('data encoded')
 
 
-# In[31]:
+# In[28]:
 
 
 pml_train_c_X.head()
 
 
-# In[18]:
+# In[29]:
 
 
 # #Generate a correlation matrix between features
@@ -162,16 +161,17 @@ pml_train_c_X.head()
 #             square=True, linewidths=.5)
 
 
-# In[34]:
+# In[30]:
 
 
 # normalize
 normalizer = Normalizer().fit(pml_train_c_X)
 pml_train_c_X = normalizer.transform(pml_train_c_X)
-pml_test_c_X = normalizer.transform(pml_train_c_X)
+pml_test_c_X = normalizer.transform(pml_test_c_X)
+pml_test_c_X.shape
 
 
-# In[35]:
+# In[31]:
 
 
 # test/train split
@@ -179,7 +179,7 @@ val_train_X, val_test_X, val_train_y, val_test_y = train_test_split(pml_train_c_
 print('data prep finished')
 
 
-# In[52]:
+# In[20]:
 
 
 # pipeline:
@@ -192,27 +192,27 @@ def try_clf(clf, clf_name=''):
     return clf
 
 
-# In[ ]:
+# In[34]:
 
 
 def use_clf(clf, clf_name='clf'):
     ans = clf.predict(pml_test_c_X)
     filename = clf_name + '.csv'
     pd.DataFrame({'id':pml_test['id'], 
-          'loss':dt_ans}).to_csv(filename,index = False)
+          'loss':ans}).to_csv(filename,index = False)
     print('exported as ' + filename)
 
 
 # ## Linear
 
-# In[53]:
+# In[32]:
 
 
 lin = LinearRegression()
 lin = try_clf(lin)
 
 
-# In[ ]:
+# In[35]:
 
 
 use_clf(lin, 'lin_default')
