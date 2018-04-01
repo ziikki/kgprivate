@@ -27,6 +27,7 @@ from sklearn.svm import SVR
 
 
 pml = pd.read_csv('pml_train.csv')
+print('data loaded')
 pml.head()
 
 
@@ -139,6 +140,7 @@ def encode_X_to_digit(orig_train_X):
 
 pml_train_c_X = encode_X_to_digit(pml_train_X)
 pml_test_c_X = encode_X_to_digit(pml_test_X)
+print('data encoded')
 
 
 # In[31]:
@@ -174,6 +176,7 @@ pml_test_c_X = normalizer.transform(pml_train_c_X)
 
 # test/train split
 val_train_X, val_test_X, val_train_y, val_test_y = train_test_split(pml_train_c_X, pml_train_y, random_state=2018, test_size=0.05)
+print('data prep finished')
 
 
 # In[52]:
@@ -193,7 +196,7 @@ def try_clf(clf, clf_name=''):
 
 
 def use_clf(clf, clf_name='clf'):
-    ans = clf.predict()
+    ans = clf.predict(pml_test_c_X)
     filename = clf_name + '.csv'
     pd.DataFrame({'id':pml_test['id'], 
           'loss':dt_ans}).to_csv(filename,index = False)
